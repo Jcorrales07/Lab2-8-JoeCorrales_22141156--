@@ -6,24 +6,26 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class RegistroCarros {
-    RandomAccessFile autos, codigos;
+    static  RandomAccessFile autos;
+    static RandomAccessFile codigos;
 
     public RegistroCarros() throws FileNotFoundException, IOException {
         File file = new File("CarpetaAutos");
         file.mkdir();
         
-        this.codigos = new RandomAccessFile("CarpetaAutos/codigos.corr", "rw");
-        this.autos = new RandomAccessFile("CarpetaAutos/autos.corr", "rw");
-        initCodes();
+        RegistroCarros.codigos = new RandomAccessFile("CarpetaAutos/codigos.corr", "rw");
+        RegistroCarros.autos = new RandomAccessFile("CarpetaAutos/autos.corr", "rw");
+        
+        iniciarCodigo();
     }
     
-    private void initCodes() throws IOException {
+    private static void iniciarCodigo() throws IOException {
         if(codigos.length() == 0) {
             codigos.writeInt(1);
         }
     }
     
-    private int getCode() throws IOException {
+    private static int getCodigo() throws IOException {
         codigos.seek(0);
         int code = codigos.readInt();
         codigos.seek(0);
@@ -31,14 +33,13 @@ public class RegistroCarros {
         return code;
     }
     
-    public void agregarCorredor(String tipoCarro, String nombreCorredor, int RGB) throws IOException {
+    public static void agregarCorredor(String tipoCarro, String nombreCorredor, int RGB) throws IOException {
         autos.seek(autos.length());
-        int code = getCode();
-        autos.writeInt(code); // numero identificador
-        autos.writeUTF(tipoCarro); //tipo de carro
-        autos.writeUTF(nombreCorredor); //nombre del corredor
-        //Parte para registrar el color
-        autos.writeInt(RGB); // El rgb del color
+        int codigo = getCodigo();
+        autos.writeInt(codigo); // numero identificador // 4
+        autos.writeLong(0); // distancia recorrida //8
+        autos.writeUTF(nombreCorredor); //nombre del corredor //indefinido
+        autos.writeInt(RGB); // El rgb del color //4
+        autos.writeUTF(tipoCarro); //tipo de carro //indefinido
     }
-    
 }

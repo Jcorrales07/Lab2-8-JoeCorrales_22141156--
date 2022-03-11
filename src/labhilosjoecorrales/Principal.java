@@ -1,20 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package labhilosjoecorrales;
 
-/**
- *
- * @author Corra
- */
-public class Principal extends javax.swing.JFrame {
+import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
-    /**
-     * Creates new form Principal
-     */
-    public Principal() {
+public class Principal extends javax.swing.JFrame {
+    Color color;
+    RegistroCarros rc = new RegistroCarros();
+    
+    public Principal() throws FileNotFoundException, IOException {
         initComponents();
+        llenarComboBoxAutos();
     }
 
     /**
@@ -36,7 +34,6 @@ public class Principal extends javax.swing.JFrame {
         progresoDeCarro = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDeCarros = new javax.swing.JTable();
-        jcTipoCarro = new javax.swing.JComboBox<>();
         btnAgregar = new javax.swing.JButton();
         txtNombrePista = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -46,11 +43,12 @@ public class Principal extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtNombreCorredor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jcPendiente = new javax.swing.JComboBox<>();
+        jcTipoCarro = new javax.swing.JComboBox<>();
         btnColor = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnUsarPista = new javax.swing.JButton();
         btnReiniciar = new javax.swing.JButton();
+        jcSeleccionarCarro = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,8 +77,6 @@ public class Principal extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaDeCarros);
 
-        jcTipoCarro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnAgregar.setText("Agregar");
 
         txtNombrePista.addActionListener(new java.awt.event.ActionListener() {
@@ -99,6 +95,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel6.setText("Nombre Pista: ");
 
+        txtNumeroIdentificador.setEditable(false);
         txtNumeroIdentificador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNumeroIdentificadorActionPerformed(evt);
@@ -109,11 +106,21 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel8.setText("Nombre Corredor");
 
-        jcPendiente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcTipoCarro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "McQueen", "Convertible", "Nascar" }));
 
         btnColor.setText("Color");
+        btnColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnColorActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnUsarPista.setText("Usar Pista");
 
@@ -145,9 +152,9 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(largoPista))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jcTipoCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jcSeleccionarCarro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGap(18, 18, 18)
                                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -157,7 +164,7 @@ public class Principal extends javax.swing.JFrame {
                                             .addGap(109, 109, 109))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jcPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jcTipoCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(jLabel8))
                                             .addGap(121, 121, 121)))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -209,25 +216,25 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnReiniciar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcTipoCarro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAgregar))
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAgregar)
+                            .addComponent(jcSeleccionarCarro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNumeroIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
+                        .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(txtNombreCorredor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnColor)
-                            .addComponent(jcPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jcTipoCarro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(btnGuardar)))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,10 +253,6 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNumeroIdentificadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroIdentificadorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumeroIdentificadorActionPerformed
-
     private void txtNombrePistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombrePistaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombrePistaActionPerformed
@@ -262,6 +265,53 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReiniciarActionPerformed
 
+    private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
+        // TODO add your handling code here:
+        JColorChooser SeleccionColor = new JColorChooser();
+        color = SeleccionColor.showDialog(null, "Seleccione el color del auto: ", Color.BLUE);
+        btnColor.setBackground(color);
+    }//GEN-LAST:event_btnColorActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        int intCarro = jcSeleccionarCarro.getSelectedIndex();
+        String tipoCarro;
+        String nombreCorredor = txtNombreCorredor.getText();
+        int RGB = color.getRGB();
+        
+        switch (intCarro) {
+            case 0: tipoCarro = "McQueen"; break;
+            case 1: tipoCarro = "Convertible"; break;
+            default: tipoCarro = "Nascar"; break;
+        }
+        
+        try {
+            RegistroCarros.agregarCorredor(tipoCarro, nombreCorredor, RGB);
+        } catch (IOException ex) { System.out.println("Ocurrio un error!"); }
+        
+        jcSeleccionarCarro.removeAllItems();
+        try { llenarComboBoxAutos(); } catch (IOException ex) {}
+        JOptionPane.showMessageDialog(null, "Corredor creado!");
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtNumeroIdentificadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroIdentificadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumeroIdentificadorActionPerformed
+
+    private void llenarComboBoxAutos() throws FileNotFoundException, IOException {
+        
+        if(RegistroCarros.autos.length() > 0) {
+            RegistroCarros.autos.seek(0);
+            while(RegistroCarros.autos.getFilePointer() < RegistroCarros.autos.length()) {
+                int codigo = RegistroCarros.autos.readInt();
+                jcSeleccionarCarro.addItem(String.valueOf(codigo));
+                RegistroCarros.autos.skipBytes(8);
+                RegistroCarros.autos.readUTF();
+                RegistroCarros.autos.readInt();
+                RegistroCarros.autos.readUTF();
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -292,7 +342,11 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                try {
+                    new Principal().setVisible(true);
+                } catch (IOException ex) {
+                    System.out.println("Error en el main");
+                }
             }
         });
     }
@@ -313,7 +367,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> jcPendiente;
+    private javax.swing.JComboBox<String> jcSeleccionarCarro;
     private javax.swing.JComboBox<String> jcTipoCarro;
     private javax.swing.JLabel largoPista;
     private javax.swing.JLabel nombrePista;
