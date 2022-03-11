@@ -6,13 +6,17 @@ public class Auto {
     public static ArrayList<Auto> autos = new ArrayList<>();
     
     private int id;
-    private double distancia;
+    private int RGB;
+    private long distancia;
     private String nombre;
+    private String tipo;
 
-    public Auto(int id, double distancia, String nombre) {
+    public Auto(int id, int RGB, long distancia, String nombre, String tipo) {
         this.id = id;
+        this.RGB = RGB;
         this.distancia = distancia;
         this.nombre = nombre;
+        this.tipo = tipo;
     }
 
     public static ArrayList<Auto> getAutos() {
@@ -30,12 +34,20 @@ public class Auto {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public int getRGB() {
+        return id;
+    }
 
-    public double getDistancia() {
+    public void setRGB(int RGB) {
+        this.RGB = RGB;
+    }
+
+    public long getDistancia() {
         return distancia;
     }
 
-    public void setDistancia(double distancia) {
+    public void setDistancia(long distancia) {
         this.distancia = distancia;
     }
 
@@ -45,6 +57,14 @@ public class Auto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     public static void cleanArray() {

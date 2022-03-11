@@ -3,6 +3,8 @@ package labhilosjoecorrales;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -50,6 +52,11 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnComenzar.setText("Comenzar");
+        btnComenzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComenzarActionPerformed(evt);
+            }
+        });
 
         btnPausar.setText("Pausar");
 
@@ -331,25 +338,31 @@ public class Principal extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) tablaDeCarros.getModel();
         Object[] fila = new Object[3];
         
-            for(Auto auto : Auto.autos) {
-                if(carro == auto.getId()-1) {
-                    fila[0] = auto.getId();
-                    fila[1] = auto.getNombre();
-                    fila[2] = auto.getDistancia();
-                    modelo.addRow(fila);
-                    tablaDeCarros.setModel(modelo);
-                }
+        for(Auto auto : Auto.autos) {
+            if(carro == auto.getId()-1) {
+                fila[0] = auto.getId();
+                fila[1] = auto.getNombre();
+                fila[2] = auto.getDistancia();
+                modelo.addRow(fila);
+                tablaDeCarros.setModel(modelo);
             }
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
-
+    int lPista;
+    
     private void btnUsarPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsarPistaActionPerformed
         String nombreTrack = txtNombrePista.getText();
-        
         //Usar para el limite del progress bar
-        int largoPista = Integer.parseInt(txtLargoPista.getText());
+        lPista = Integer.parseInt(txtLargoPista.getText());
         nombrePista.setText(nombreTrack);
         this.largoPista.setText(txtLargoPista.getText());
     }//GEN-LAST:event_btnUsarPistaActionPerformed
+
+    private void btnComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarActionPerformed
+        for (int i = 0; i < tablaDeCarros.getRowCount(); i++) {
+            
+        }
+    }//GEN-LAST:event_btnComenzarActionPerformed
 
     private void llenarComboYArrayAutos() throws FileNotFoundException, IOException {
         if(RegistroCarros.autos.length() > 0) {
@@ -360,9 +373,9 @@ public class Principal extends javax.swing.JFrame {
                 jcSeleccionarCarro.addItem(String.valueOf(codigo));
                 long dist = RegistroCarros.autos.readLong();
                 String nombre = RegistroCarros.autos.readUTF();
-                int rgb = RegistroCarros.autos.readInt();
+                int RGB = RegistroCarros.autos.readInt();
                 String tipoCarro = RegistroCarros.autos.readUTF();
-                Auto.autos.add(new Auto(codigo, dist, nombre));
+                Auto.autos.add(new Auto(codigo, RGB, dist, nombre, tipoCarro));
             }
             
             System.out.println("\n\n[=== ArrayList Actualizado ===]\n");
@@ -370,9 +383,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -409,13 +419,52 @@ public class Principal extends javax.swing.JFrame {
         });
     }
     
+    public Auto searchCarWith(int id) {
+        for(Auto auto : Auto.autos) {
+            if(auto.getId() == id) {
+                return auto;
+            }
+        }
+        return null;
+    }
+    
+    
+    public void threadFor1(int id) {
+        hiloProgress hilo = new hiloProgress();
+        hilo.start();
+        Auto auto = searchCarWith(id);
+        int RGB = auto.getRGB();
+        int min;
+        int max;
+        long autoDist;
+        
+        if(auto.getTipo().equals("McQueen")) {
+            min = 30;
+            max = 190;
+        } else if(auto.getTipo().equals("Convertible")) {
+            min = 20;
+            max = 200;
+        } else { min = 40; max = 180;}
+        
+        progresoDeCarro.setForeground(new Color(RGB));
+        autoDist = auto.getDistancia();
+        long randomDist = (long) (Math.random() * (max - min));
+        autoDist += randomDist;
+        progresoDeCarro.setValue((int)autoDist);
+    }
+    
+    
     class hiloProgress extends Thread {
         public void run() {
-            
-            
-            
-            
-            
+            for (int i = 0; i < lPista; i++) {
+                progresoDeCarro.setValue(i);
+                try {
+                    Thread.sleep(1500);
+                    progresoDeCarro.repaint();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
     
