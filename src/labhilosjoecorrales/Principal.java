@@ -13,6 +13,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() throws FileNotFoundException, IOException {
         initComponents();
         llenarComboBoxAutos();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -66,18 +67,23 @@ public class Principal extends javax.swing.JFrame {
 
         tablaDeCarros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Identificador", "Corredor", "Distancia"
             }
         ));
         jScrollPane1.setViewportView(tablaDeCarros);
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         txtNombrePista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +109,17 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jLabel7.setText("Numero Identificador");
+
+        txtNombreCorredor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNombreCorredorFocusGained(evt);
+            }
+        });
+        txtNombreCorredor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreCorredorActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Nombre Corredor");
 
@@ -295,7 +312,29 @@ public class Principal extends javax.swing.JFrame {
 
     private void txtNumeroIdentificadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroIdentificadorActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtNumeroIdentificadorActionPerformed
+
+    private void txtNombreCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreCorredorActionPerformed
+        
+        
+    }//GEN-LAST:event_txtNombreCorredorActionPerformed
+
+    private void txtNombreCorredorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreCorredorFocusGained
+        // TODO add your handling code here:
+        int numero = 0;
+        try {
+            numero = RegistroCarros.actualCode();
+        } catch (IOException ex) {}
+        txtNumeroIdentificador.setText(String.valueOf(numero));
+    }//GEN-LAST:event_txtNombreCorredorFocusGained
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void llenarComboBoxAutos() throws FileNotFoundException, IOException {
         

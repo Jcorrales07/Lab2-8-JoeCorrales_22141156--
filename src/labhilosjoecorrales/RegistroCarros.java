@@ -33,6 +33,13 @@ public class RegistroCarros {
         return code;
     }
     
+    public static int actualCode() throws IOException {
+        codigos.seek(0);
+        int code = codigos.readInt();
+        codigos.seek(0);
+        return code;
+    }
+    
     public static void agregarCorredor(String tipoCarro, String nombreCorredor, int RGB) throws IOException {
         autos.seek(autos.length());
         int codigo = getCodigo();
