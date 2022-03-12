@@ -360,7 +360,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarActionPerformed
         for (int i = 0; i < tablaDeCarros.getRowCount(); i++) {
-            
+            int id = (int) tablaDeCarros.getValueAt(i, 0);
+            threadFor1(id);
         }
     }//GEN-LAST:event_btnComenzarActionPerformed
 
@@ -432,6 +433,7 @@ public class Principal extends javax.swing.JFrame {
     public void threadFor1(int id) {
         hiloProgress hilo = new hiloProgress();
         hilo.start();
+        
         Auto auto = searchCarWith(id);
         int RGB = auto.getRGB();
         int min;
